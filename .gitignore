@@ -13,4 +13,4 @@ target/
 hs_err_pid*
 
 # secrets
-src/main/resources/application.properties
+src/main/resources/application-development.properties
