@@ -1,4 +1,4 @@
-package com.alex.alexwebapp;
+package com.alex.alexwebapp.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
