@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html
+ xmlns         = "http://www.w3.org/1999/xhtml"
+ xmlns:th      = "http://www.thymeleaf.org"
+ xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+>
+<head>
+   <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css"  media="screen,projection"/>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title th:text="#{app.title}" />
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+  <nav>
+    <div class="nav-wrapper">
+      <a th:href="@{/}" class="brand-logo" th:text="#{app.title}" >Logo</a>
+      <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+      <ul class="right hide-on-med-and-down">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/hello}">Hello</a></li>
+        <li><a href="#">他１</a></li>
+        <li><a href="#">他２</a></li>
+      </ul>
+      <ul class="side-nav" id="mobile-demo">
+        <li><a th:href="@{/}">Home</a></li>
+        <li><a th:href="@{/hello}">Hello</a></li>
+        <li><a href="#">他１</a></li>
+        <li><a href="#">他２</a></li>
+      </ul>
+    </div>
+  </nav>
+  <section layout:fragment="content">
+    <p>Page content goes here</p>
+  </section>
+  <footer>
+    <p layout:fragment="custom-footer">Custom footer here</p>
+  </footer>  
+    <!--Import jQuery before materialize.js-->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js" />
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js" />
+    <script type="text/javascript" th:src="@{/js/layout.js}" />
+</body>
+</html>
