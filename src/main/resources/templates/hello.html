@@ -1,11 +1,13 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout">
-<head th:include="fragments::head" />
-<body>
-hello from hello.html
-<br/>
-<span th:text="${hello}">Hello!</span>
-<br/>
-</body>
+<html layout:decorator="layout">
+<head>
+	<title th:text="|#{app.title} - Hello|" />
+</head>
+<div>
+    <th:block layout:fragment="content">
+        <p>Helloページフラグメント</p>
+        <span th:text="${helloText}">Hello!</span>
+        <br/>
+        <span th:include="fragments::sample-span" />
+    </th:block>
+</div>
 </html>
