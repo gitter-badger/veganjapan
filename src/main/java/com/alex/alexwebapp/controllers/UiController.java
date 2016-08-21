@@ -43,7 +43,7 @@ public class UiController {
 
 	@RequestMapping("hello")
 	public String hello(Model model) {
-		model.addAttribute("hello", jdbcTemplate.queryForObject("SELECT col FROM random_table WHERE id = 1", String.class));
+		model.addAttribute("hello", jdbcTemplate.queryForObject("SELECT 1", String.class));
 		model.addAttribute("helloText", "hello from ui controller");
 		logger.info(property);
 		logger.info(property2);
