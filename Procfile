@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -agentlib:TakipiAgent -jar target/vegan-japan-*.jar
+web: java -Dserver.port=$PORT $JAVA_OPTS -jar target/vegan-japan-*.jar
