@@ -5,7 +5,7 @@
 
 	<groupId>com.alex.alexwebapp</groupId>
 	<artifactId>vegan-japan</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>vegan-japan</name>
@@ -18,12 +18,53 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<profiles>
+		<profile>
+			<id>development</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>env.SPRING_ACTIVE_PROFILE</name>
+                    <value>development</value>
+				</property>
+			</activation>
+			<properties>
+                <downloadSources>true</downloadSources>
+                <downloadJavadocs>true</downloadJavadocs>
+			</properties>
+		</profile>
+        <profile>
+            <id>production</id>
+            <activation>
+                <property>
+                    <name>env.SPRING_ACTIVE_PROFILE</name>
+                    <value>production</value>
+                </property>
+            </activation>
+            <properties>
+                <downloadSources>false</downloadSources>
+                <downloadJavadocs>false</downloadJavadocs>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <activation>
+                <property>
+                    <name>env.SPRING_ACTIVE_PROFILE</name>
+                    <value>test</value>
+                </property>
+            </activation>
+            <properties>
+                <downloadSources>false</downloadSources>
+                <downloadJavadocs>false</downloadJavadocs>
+            </properties>
+        </profile>
+	</profiles>
+
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<downloadSources>true</downloadSources>
-		<downloadJavadocs>true</downloadJavadocs>
 	</properties>
 
 	<dependencies>

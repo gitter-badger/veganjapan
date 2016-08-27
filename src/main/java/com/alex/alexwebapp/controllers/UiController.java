@@ -35,12 +35,6 @@ public class UiController {
 	@Autowired
 	private Environment environment;
 
-	@Value("${aproperty}")
-	String property;
-
-	@Value("${aproperty2}")
-	String property2;
-
 	@Value("${google.browser-key}")
 	String googleBrowserKey;
 
@@ -54,9 +48,6 @@ public class UiController {
 	public String hello(Model model) {
 		model.addAttribute("hello", jdbcTemplate.queryForObject("SELECT 1", String.class));
 		model.addAttribute("helloText", "hello from ui controller");
-		logger.info(property);
-		logger.info(property2);
-		logger.info("{} {}", environment.getActiveProfiles()[0], environment.getActiveProfiles().length);
 		return "hello";
 	}
 
