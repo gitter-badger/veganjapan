@@ -41,6 +41,15 @@ public class UiController {
 	@Value("${aproperty2}")
 	String property2;
 
+	@Value("${google.browser-key}")
+	String googleBrowserKey;
+
+	@RequestMapping("/")
+	public String index(Model model) {
+		model.addAttribute("googleBrowserKey", googleBrowserKey);
+		return "index";
+	}
+
 	@RequestMapping("hello")
 	public String hello(Model model) {
 		model.addAttribute("hello", jdbcTemplate.queryForObject("SELECT col FROM random_table WHERE id = 1", String.class));
