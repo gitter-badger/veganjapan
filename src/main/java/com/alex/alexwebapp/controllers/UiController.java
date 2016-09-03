@@ -50,14 +50,15 @@ public class UiController {
 
 	@RequestMapping(value="/login", method = RequestMethod.GET)
 	protected String login(final Map<String, Object> model, final HttpServletRequest req) {
+		model.put("error", model.get("error") != null);
 		NonceUtils.addNonceToStorage(req);
 		model.put("clientId", myAuth0Config.getClientId());
 		model.put("domain", myAuth0Config.getDomain());
-		model.put("state", SessionUtils.getState(req));
 		model.put("redirectUrl", new String(req.getRequestURL()).replace(req.getRequestURI(), "") +
 				myAuth0Config.getLoginCallback());
+		model.put("state", SessionUtils.getState(req));
+		model.put("connection", myAuth0Config.getConnection());
 
-		model.put("error", model.get("error") != null); // FIXME: do we need this?
 		return "login";
 	}
 
