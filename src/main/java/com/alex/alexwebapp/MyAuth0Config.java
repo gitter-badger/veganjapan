@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
 /**
@@ -17,19 +16,4 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @Configuration
 public class MyAuth0Config extends Auth0Config {
 
-    @Override
-    protected void authorizeRequests(final HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers("/", "/home", "/hello", "/callback").permitAll()
-                    .antMatchers("/portal/**").hasAuthority("ROLE_ADMIN")
-                    .antMatchers(securedRoute).authenticated()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login").permitAll().successForwardUrl("/secure")
-                    .and()
-                .logout()
-                    .permitAll();
-    }
 }
