@@ -1,5 +1,7 @@
 # veganjapan
 
+[![Join the chat at https://gitter.im/veganjapan/Lobby](https://badges.gitter.im/veganjapan/Lobby.svg)](https://gitter.im/veganjapan/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![CircleCI](https://circleci.com/gh/alextjp/veganjapan/tree/master.svg?style=svg)](https://circleci.com/gh/alextjp/veganjapan/tree/master)
 
 ## Info
