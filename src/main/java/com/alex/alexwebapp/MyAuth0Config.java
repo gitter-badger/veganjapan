@@ -1,6 +1,9 @@
 package com.alex.alexwebapp;
 
 import com.auth0.spring.security.mvc.Auth0Config;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,6 +19,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 @Configuration
 public class MyAuth0Config extends Auth0Config {
+
+    @Value(value = "${auth0.connection}")
+    @Getter
+    @Setter
+    protected String connection;
 
     @Override
     protected void authorizeRequests(final HttpSecurity http) throws Exception {

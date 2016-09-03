@@ -6,26 +6,58 @@
     <div>
         <th:block layout:fragment="content">
             <span th:include="fragments::sample-span" />
-            <div id="lock-div" />
-            <script type="text/javascript" src="https://cdn.auth0.com/js/lock/10.2.2/lock.min.js" />
+            <div>
+                <div>
+                    <h2 class="form-signin-heading">Portal Login</h2>
+                    <label for="email" class="sr-only">Email address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Email address" required="" autofocus="" />
+                    <label for="password" class="sr-only">Password</label>
+                    <input type="password" id="password" class="form-control" placeholder="Password" required="" />
+                    <button id="signin-db" class="btn btn-lg btn-primary btn-block" onclick="signinDb();">Sign in</button>
+                    <button id="signin-google" class="btn btn-lg btn-primary btn-block" onclick="signinGoogle();">Sign in Google</button>
+                </div>
+            </div>
+            <script type="text/javascript" src="https://cdn.auth0.com/w2/auth0-7.0.4.min.js" />
             <script th:inline="javascript">
-                var clientId = /*[[${clientId}]]*/ 'clientId';
-                var domain = /*[[${domain}]]*/ 'domain';
-                var options =  {
-                    auth: {
-                        redirectUrl: /*[[${redirectUrl}]]*/ 'redirectUrl',
-                        responseType: 'code',
-                        params: {
-                            state: /*[[${state}]]*/,
-                            // Learn about scopes: https://auth0.com/docs/scopes
-                            scope: 'openid roles user_id name nickname email picture'
-                        }
-                    },
-                    container: "lock-div"
-                };
-                var lock = new Auth0Lock(clientId, domain, options);
+                // initialize
+                 var auth0 = new Auth0({
+                    domain: /*[[${domain}]]*/,
+                    clientID: /*[[${clientId}]]*/,
+                    callbackURL: /*[[${redirectUrl}]]*/,
+                    responseType: 'code'
+                });
 
-                lock.show();                            
+                // FIXME
+                var error = /*[[${error}]]*/;
+                if (error) {
+                    //
+                } else {
+                    //
+                }
+
+                //trigger login with google
+                function signinGoogle () {
+                    auth0.login({
+                        connection: 'google-oauth2',
+                        state: /*[[${state}]]*/
+                    });
+                }
+
+                function signinDb() {
+                    auth0.login({
+                        username: $('#email').val(),
+                        password: $('#password').val(),
+                        sso: true,
+                        connection: /*[[${connection}]]*/,
+                        // change scopes to whatever you like
+                        // claims are added to JWT id_token - openid profile gives everything
+                        scope: 'openid user_id name nickname email picture',
+                        state: /*[[${state}]]*/
+                    }, function (err) {
+                        // this only gets called if there was a login error
+                        Materialize.toast(err, 4000) // 4000 is the duration of the toast
+                    });
+                }                    
             </script>
         </th:block>
     </div>
