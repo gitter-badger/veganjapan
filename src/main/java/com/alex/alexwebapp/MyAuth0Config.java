@@ -19,17 +19,10 @@ public class MyAuth0Config extends Auth0Config {
 
     @Override
     protected void authorizeRequests(final HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                    .antMatchers("/", "/home", "/hello", "/callback").permitAll()
-                    .antMatchers("/portal/**").hasAuthority("ROLE_ADMIN")
-                    .antMatchers(securedRoute).authenticated()
-                    .anyRequest().authenticated()
-                    .and()
-                .formLogin()
-                    .loginPage("/login").permitAll().successForwardUrl("/secure")
-                    .and()
-                .logout()
-                    .permitAll();
+        http.authorizeRequests()
+                .antMatchers(securedRoute).authenticated()
+                .antMatchers("/**").permitAll()
+                .and()
+                .formLogin().loginPage("/login");
     }
 }
