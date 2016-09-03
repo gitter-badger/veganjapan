@@ -1,0 +1,33 @@
+<html layout:decorator="layout">
+<head>
+    <title th:text="|#{app.title} - ログイン|" />
+</head>
+<body>
+    <div>
+        <th:block layout:fragment="content">
+            <span th:include="fragments::sample-span" />
+            <div id="lock-div" />
+            <script type="text/javascript" src="https://cdn.auth0.com/js/lock/10.2.2/lock.min.js" />
+            <script th:inline="javascript">
+                var clientId = /*[[${clientId}]]*/ 'clientId';
+                var domain = /*[[${domain}]]*/ 'domain';
+                var options =  {
+                    auth: {
+                        redirectUrl: /*[[${redirectUrl}]]*/ 'redirectUrl',
+                        responseType: 'code',
+                        params: {
+                            state: /*[[${state}]]*/,
+                            // Learn about scopes: https://auth0.com/docs/scopes
+                            scope: 'openid roles user_id name nickname email picture'
+                        }
+                    },
+                    container: "lock-div"
+                };
+                var lock = new Auth0Lock(clientId, domain, options);
+
+                lock.show();                            
+            </script>
+        </th:block>
+    </div>
+</body>
+</html>

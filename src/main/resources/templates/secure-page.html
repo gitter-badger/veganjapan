@@ -1,0 +1,15 @@
+<html layout:decorator="layout">
+<head>
+    <title th:text="|#{app.title} - Secure page|" />
+</head>
+<div>
+    <th:block layout:fragment="content">
+        <!--<h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>-->
+        <h1 th:inline="text">Hello Auth0 [[${user.userId}]]!</h1>
+        <form th:action="@{/logout}" method="get">
+            <input type="submit" value="Sign Out"/>
+        </form>
+        <span th:include="fragments::sample-span" />
+    </th:block>
+</div>
+</html>

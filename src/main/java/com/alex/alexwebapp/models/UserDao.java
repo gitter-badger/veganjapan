@@ -1,11 +1,12 @@
 package com.alex.alexwebapp.models;
 
-import javax.transaction.Transactional;
-
 import org.springframework.data.repository.CrudRepository;
+
+import javax.transaction.Transactional;
 
 /**
  * @author alex on 2016/08/21.
+ * TODO: delete (for now, keep for reference)
  */
 @Transactional
 public interface UserDao extends CrudRepository<User, Long> {

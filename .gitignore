@@ -15,6 +15,3 @@ hs_err_pid*
 # IDE
 .idea/
 vegan-japan.iml
-
-# development
-src/main/resources/application-development.properties
