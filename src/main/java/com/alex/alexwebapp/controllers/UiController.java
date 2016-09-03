@@ -1,25 +1,22 @@
 package com.alex.alexwebapp.controllers;
 
-import com.alex.alexwebapp.models.User;
-import com.alex.alexwebapp.models.UserDao;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.PropertySource;
+import com.alex.alexwebapp.MyAuth0Config;
+import com.auth0.Auth0User;
+import com.auth0.NonceUtils;
+import com.auth0.SessionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
+import java.util.Map;
 
 @Controller
 public class UiController {
@@ -27,16 +24,16 @@ public class UiController {
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 
-	@Autowired
-	private UserDao userDao;
-
 	private static final Logger logger = LoggerFactory.getLogger(UiController.class);
 
 	@Autowired
-	private Environment environment;
+	private MyAuth0Config myAuth0Config;
 
 	@Value("${google.browser-key}")
-	String googleBrowserKey;
+	private String googleBrowserKey;
+
+	@Value("${auth0.clientId}")
+	private String clientId;
 
 	@RequestMapping("/")
 	public String index(Model model) {
@@ -51,23 +48,37 @@ public class UiController {
 		return "hello";
 	}
 
-	/**
-	 * /get-by-email  --> Return the id for the user having the passed email.
-	 *
-	 * @param email The email to search in the database.
-	 * @return The user id or a message error if the user is not found.
-	 */
-	@RequestMapping("/get-user-by-email")
-	@ResponseBody
-	public String getByEmail(String email) {
-		String userId;
-		try {
-			User user = userDao.findByEmail(email);
-			userId = String.valueOf(user.getId());
+	@RequestMapping(value="/login", method = RequestMethod.GET)
+	protected String login(final Map<String, Object> model, final HttpServletRequest req) {
+		NonceUtils.addNonceToStorage(req);
+		model.put("clientId", myAuth0Config.getClientId());
+		model.put("domain", myAuth0Config.getDomain());
+		model.put("state", SessionUtils.getState(req));
+		model.put("redirectUrl", new String(req.getRequestURL()).replace(req.getRequestURI(), "") +
+				myAuth0Config.getLoginCallback());
+
+		model.put("error", model.get("error") != null); // FIXME: do we need this?
+		return "login";
+	}
+
+	@RequestMapping(value="/logout", method = RequestMethod.GET)
+	protected String logout(final HttpServletRequest request) {
+		if (request.getSession() != null) {
+			logger.debug("invalidating sesion");
+			request.getSession().invalidate();
 		}
-		catch (Exception ex) {
-			return "User not found";
-		}
-		return "The user id is: " + userId;
+		final String logoutPath = myAuth0Config.getOnLogoutRedirectTo();
+		return "redirect:" + logoutPath;
+	}
+
+	@RequestMapping(value="/secure", method = RequestMethod.GET)
+	protected String secure(final Map<String, Object> model, final HttpServletRequest req, final Principal principal) {
+		logger.info("Secure page");
+		final String name = principal.getName();
+		logger.info("Principal name: " + name);
+		final Auth0User user = SessionUtils.getAuth0User(req);
+		logger.debug(user.toString());
+		model.put("user", user);
+		return "secure-page";
 	}
 }

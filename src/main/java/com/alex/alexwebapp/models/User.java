@@ -6,6 +6,7 @@ import javax.persistence.*;
 
 import javax.validation.constraints.NotNull;
 
+// TODO: delete (for now, keep for reference)
 @Data
 @Entity
 @Table(name = "users")
